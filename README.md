@@ -37,7 +37,7 @@ En caso falte alguno se usa el comando:
 ```
 sudo apt install "Nombre de la Herramienta"
 ```
-#### Archivo de Prueba
+#### Archivo de Prueba con Bats
 Se creará en la carpeta tests, el archivo makefile_tests.bats y se escribe lo siguiente:
 ```
 #!/usr/bin/env bats
@@ -61,3 +61,14 @@ Para después correr el programa con:
 ```
 bats tests/makefile_tests.bats
 ```
+#### Crear target build en el Makefile
+Se añade ahora al makefile lo siguiente:
+```
+build:
+	@echo "Preparando entorno de ejecución..."
+	@touch out/http.log
+	@touch out/dns.log
+```
+- @echo Muestra el mensaje
+- @touch crea el archivo
+Ejecutamos make build, para la creación de los archivos http.log y dns.log en la carpeta out/.
