@@ -14,3 +14,6 @@ run:
 	@echo "Ejecutando scripts principales..."
 	@bash src/http_tls_checker.sh > out/http.log
 	@bash src/dns_parser.sh > out/dns.log
+pack:
+	@echo "Empaquetando proyecto en dist/"
+	@tar -czf dist/proyecto5.tar.gz src/ out/

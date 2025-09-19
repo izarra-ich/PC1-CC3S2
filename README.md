@@ -125,3 +125,10 @@ Para la ejecución usamos el comando:
 ```
 bats tests/makefile_tests.bats
 ```
+#### Target pack
+Se añade al Makefile:
+```
+pack:
+	@echo "Empaquetando proyecto en dist/"
+	@tar -czf dist/proyecto5.tar.gz src/ out/
+```
