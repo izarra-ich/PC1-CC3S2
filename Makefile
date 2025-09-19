@@ -21,3 +21,5 @@ clean:
 	@echo "Limpiando archivos generados..."
 	@rm -f out/*.log
 	@rm -f dist/*.tar.gz
+
+.PHONY: clean build run tools pack carpetas test

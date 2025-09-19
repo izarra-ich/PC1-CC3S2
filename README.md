@@ -142,3 +142,9 @@ clean:
 ```
 - rm -f out/*.log, borra todos los archivos .log en la carpeta out/
 - rm -f dist/*.tar.gz, borra el archivo .tar.gz que generaste en pack
+#### Uso de .PHONY
+Se añadio lo siguiente en el Makefile:
+```
+.PHONY: clean build run tools pack carpetas test
+```
+Por si se crean carpetas con el mismo nombre, y asi no tengamos problemas al hacer make.
