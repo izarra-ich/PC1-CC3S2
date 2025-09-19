@@ -37,3 +37,27 @@ En caso falte alguno se usa el comando:
 ```
 sudo apt install "Nombre de la Herramienta"
 ```
+#### Archivo de Prueba
+Se creará en la carpeta tests, el archivo makefile_tests.bats y se escribe lo siguiente:
+```
+#!/usr/bin/env bats
+
+@test "tools: Verifica que las herramientas requeridas estén disponibles" {
+  run make tools
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"Todas las herramientas requeridas están disponibles."* ]]
+}
+```
+- #!/usr/bin/env bats indica que el archivo se ejecuta con bats.
+- @test " " Define una prueba con una descripción.
+- [ "$status" -eq 0 ] Verifica que el código de salida fue 0.
+- [[ "$output" == *" "* ]] Verifica que la salida incluya el texto esperado.
+
+Luego le damos permisos de ejecución con el comando:
+```
+chmod +x tests/makefile_tests.bats
+```
+Para después correr el programa con:
+```
+bats tests/makefile_tests.bats
+```
