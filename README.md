@@ -24,3 +24,16 @@ dist/
 systemd/
 Makefile
 ```
+#### Implementacion de targets necesarios para el proyecto
+- Creamos el target tools, para verfificar que las herramientas que se van a usar están disponibles
+```
+tools:
+	command -v curl >/dev/null || (echo "Falta curl" && exit 1)
+	command -v dig >/dev/null || (echo "Falta dig" && exit 1)
+	command -v bats >/dev/null || (echo "Falta bats" && exit 1)
+	echo "Todas las herramientas requeridas están disponibles."
+```
+En caso falte alguno se usa el comando:
+```
+sudo apt install "Nombre de la Herramienta"
+```
