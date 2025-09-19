@@ -10,3 +10,7 @@ build:
 	@echo "Preparando entorno de ejecución..."
 	@touch out/http.log
 	@touch out/dns.log
+run:
+	@echo "Ejecutando scripts principales..."
+	@bash src/http_tls_checker.sh > out/http.log
+	@bash src/dns_parser.sh > out/dns.log

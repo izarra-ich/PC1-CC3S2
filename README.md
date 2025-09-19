@@ -72,3 +72,36 @@ build:
 - @echo Muestra el mensaje
 - @touch crea el archivo
 Ejecutamos make build, para la creación de los archivos http.log y dns.log en la carpeta out/.
+#### Crear target run en el Makefile
+Antes se creará archivos de simulacion (http y dns), ya que serán creados por los otros alumnos.
+- http:
+```
+echo '#!/bin/bash
+echo "Simulación de chequeo HTTP"
+exit 0' > src/http_tls_checker.sh
+chmod +x src/http_tls_checker.sh
+```
+- dns:
+```
+echo '#!/bin/bash
+echo "Simulación de chequeo DNS"
+exit 0' > src/dns_parser.sh
+chmod +x src/dns_parser.sh
+```
+Tanto para http y dns se puede ejecutar los comando en bloque para la creación de los scripts de simulación.
+
+Verificamos que las pruebas funcionen:
+```
+bash src/http_tls_checker.sh
+bash src/dns_parser.sh
+```
+Ahora si en el Makefile añadimos el target run:
+```
+run:
+	@echo "Ejecutando scripts principales..."
+	@bash src/http_tls_checker.sh > out/http.log
+	@bash src/dns_parser.sh > out/dns.log
+```
+- bash src/http_tlschecker.sh ejecuta el script simulado (Se encargará el alumno1)
+- bash src/dns_parser.sh ejecuta el script simulado (alumno2)
+- '>' guarda el resultado en el archivo dado.
