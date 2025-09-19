@@ -125,10 +125,20 @@ Para la ejecución usamos el comando:
 ```
 bats tests/makefile_tests.bats
 ```
-#### Target pack
+#### Crear target pack en el Makefile
 Se añade al Makefile:
 ```
 pack:
 	@echo "Empaquetando proyecto en dist/"
 	@tar -czf dist/proyecto5.tar.gz src/ out/
 ```
+#### Crear target clean en el Makefile
+Se añade el target clean en el makefile:
+```
+clean:
+	@echo "Limpiando archivos generados..."
+	@rm -f out/*.log
+	@rm -f dist/*.tar.gz
+```
+- rm -f out/*.log, borra todos los archivos .log en la carpeta out/
+- rm -f dist/*.tar.gz, borra el archivo .tar.gz que generaste en pack

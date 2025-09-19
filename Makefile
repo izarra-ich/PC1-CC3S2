@@ -17,3 +17,7 @@ run:
 pack:
 	@echo "Empaquetando proyecto en dist/"
 	@tar -czf dist/proyecto5.tar.gz src/ out/
+clean:
+	@echo "Limpiando archivos generados..."
+	@rm -f out/*.log
+	@rm -f dist/*.tar.gz
