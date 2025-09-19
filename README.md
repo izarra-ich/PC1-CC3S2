@@ -37,7 +37,7 @@ En caso falte alguno se usa el comando:
 ```
 sudo apt install "Nombre de la Herramienta"
 ```
-#### Archivo de Prueba con Bats
+#### Archivo de Prueba con Bats para Tools
 Se creará en la carpeta tests, el archivo makefile_tests.bats y se escribe lo siguiente:
 ```
 #!/usr/bin/env bats
@@ -105,3 +105,23 @@ run:
 - bash src/http_tlschecker.sh ejecuta el script simulado (Se encargará el alumno1)
 - bash src/dns_parser.sh ejecuta el script simulado (alumno2)
 - '>' guarda el resultado en el archivo dado.
+#### Archivo de Prueba  con Bats para Run
+Se añadio al archivo makefile_tests.bats:
+```
+@test "run: Ejecuta scripts y genera archivos en out/" {
+  run make run
+  [ "$status" -eq 0 ]
+  [ -f "out/http.log" ]
+  [ -f "out/dns.log" ]
+  grep -q "Simulación de chequeo HTTP" out/http.log
+  grep -q "Simulación de chequeo DNS" out/dns.log
+}
+```
+- run make run, ejecuta el target run y guarda su salida
+- [ "$status" -eq 0 ], verifica que el comando no fallo
+- [ -f "archivo" ], verifica que los archivos existen
+- greep -q "texto" archivo, verifica que el archivo contiene ese text
+Para la ejecución usamos el comando:
+```
+bats tests/makefile_tests.bats
+```
