@@ -32,24 +32,24 @@ def root_post():
         port=PORT,
     )
     
-@app.route("/", methods=["PUT"])
-def root_put():
+@app.route("/<int:id>", methods=["PUT"])
+def root_put(id):
     # Registrar logs en stdout (12-Factor: logs como flujos de eventos)
     print(f"[INFO] PUT /  app={APP_NAME} release={RELEASE}", file=sys.stdout, flush=True)
     return jsonify(
         status="ok",
-        message=MESSAGE,
+        message=f"params {id} {MESSAGE}",
         release=RELEASE,
         port=PORT,
     )
     
-@app.route("/", methods=["DELETE"])
-def root_delete():
+@app.route("/<int:id>", methods=["DELETE"])     # Eliminar recurso con id
+def root_delete():                              # omito id intencionalmente para generar error 500
     # Registrar logs en stdout (12-Factor: logs como flujos de eventos)
     print(f"[INFO] DELETE /  app={APP_NAME} release={RELEASE}", file=sys.stdout, flush=True)
     return jsonify(
         status="ok",
-        message=MESSAGE,
+        message=f"params {id} {MESSAGE}",
         release=RELEASE,
         port=PORT,
     )
