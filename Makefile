@@ -39,7 +39,7 @@ AWL 		:= $(shell command -v awk 2>/dev/null)
 
 # Ayuda / Debug
 .PHONY: help
-help: ## Mostrar los targets disponibles
+help: ## Muestra los targets disponibles
 	@echo "Make targets:"
 	@grep -E '^[a-zA-Z0-9_\-]+:.*?##' $(MAKEFILE_LIST) | \
 		awk 'BEGIN{FS=":.*?##"}{printf "  \033[36m%-22s\033[0m %s\n", $$1, $$2}'
@@ -74,7 +74,7 @@ run: ## Ejecutar app Flask en segundo plano.
 	echo "PID guardado en $(OUT)/app.pid"
 
 .PHONY: stop
-stop: ## Detener la app Flask
+stop: ## Detener app Flask
 	@echo "Deteniendo app Flask ejecutandose en puerto $(PORT)..."
 	@if [ -f $(OUT)/app.pid ]; then \
 	  PID=$$(cat $(OUT)/app.pid); \
@@ -83,7 +83,7 @@ stop: ## Detener la app Flask
 	fi
 
 .PHONY: cleanup
-cleanup: ## Detener la app Flask, eliminar venv y directorios generados
+cleanup: ## Elimina venv y directorios generados
 	@echo "Eliminando directorios $(OUT) y $(DIST)..."
 	@rm -rf $(OUT) $(DIST)
 	@echo "Eliminando venv $(VENV)..."
