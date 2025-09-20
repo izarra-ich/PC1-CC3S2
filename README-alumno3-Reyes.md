@@ -148,3 +148,44 @@ Se añadio lo siguiente en el Makefile:
 .PHONY: clean build run tools pack carpetas test
 ```
 Por si se crean carpetas con el mismo nombre, y asi no tengamos problemas al hacer make.
+#### ----------------------------------------------------------------------------
+#### Adaptación del proyecto para integración con Alumno 1
+
+Viendo lo realizado por los otros alumnos, se desarrolló una aplicación Flask (`app.py`) ubicada en `src/`, que responde a solicitudes HTTP (GET, POST, PUT y DELETE) y utiliza variables de entorno como `PORT`, `APP_NAME`, `MESSAGE` y `RELEASE`.
+
+Como nosotros habiamos creado script simulados `http_tls_checker.sh` y `dns_parser.sh`, ahora se modifico el makefile.
+
+##### Cambios realizados
+
+- Se añadió el target `prepare` para:
+  - Crear un entorno virtual `venv`
+  - Instalar Flask usando pip
+  - Preparar los directorios `out/` y `dist/`
+
+- Se modificó el target `run` para:
+  - Ejecutar el archivo `app.py` en segundo plano, usando las variables de entorno requeridas
+  - Guardar el PID del proceso en `out/app.pid`
+  - Realizar pruebas HTTP (`GET`, `POST`, `PUT`, `DELETE`) usando `curl`
+  - Guardar las respuestas en `out/http.log`
+
+- Se añadió el target `stop` para:
+  - Leer el PID guardado y detener el servidor Flask
+  - Eliminar el archivo `out/app.pid`
+
+- Se eliminó el uso de los scripts simulados (`http_tls_checker.sh`, `dns_parser.sh`), ya que la aplicación Flask los reemplaza completamente.
+
+- Se añadió la eliminación del entorno `venv/` en el target `clean` para limpiar correctamente todos los recursos generados.
+
+##### Modificación en la prueba Bats para `run`
+
+Dado que ahora se ejecuta la app Flask y se guardan las respuestas HTTP en `out/http.log`, se modificó el test para validar eso:
+
+```
+@test "run: Ejecuta app Flask y guarda respuestas HTTP" {
+  run make run
+  [ "$status" -eq 0 ]
+  [ -f "out/http.log" ]
+  grep -q "status" out/http.log
+}
+```
+Todos estos cambios se hicieron para unificar el proyecto y usar metodologia 12-Factor App.
