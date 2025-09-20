@@ -1,0 +1,16 @@
+# Bitácora – Alumno 2
+- Fecha:
+- Máquina (uname -a):
+- Variables de entorno usadas:
+  - DNS_SERVER=8.8.8.8
+  - TARGETS=example.com
+- Comandos ejecutados (copiar/pegar):
+  - ./src/dns_check.sh
+  - ./src/parse_logs.sh
+  - bats tests/test_dns.bats
+- Archivos generados (out/):
+  - out/dns_example.com.txt
+  - out/dns_example.com.parsed
+  - out/ips_count.txt
+  - out/tls_errors.txt
+- Observaciones:
