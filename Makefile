@@ -37,6 +37,8 @@ GREP    := $(shell command -v grep 2>/dev/null)
 SED     := $(shell command -v sed 2>/dev/null)
 AWL 		:= $(shell command -v awk 2>/dev/null)
 
+all: tools prepare run_app wait_app analyze stop_app ## verificar, crear venv, iniciar app y ejecutar analizador de logs y detener la app
+
 # Ayuda / Debug
 .PHONY: help
 help: ## Muestra los targets disponibles
@@ -65,22 +67,43 @@ $(VENV):
 	@echo "Creando venv con: $(PY_BOOT) -m venv --prompt $(VENV_PROMPT) $(VENV)"
 	@$(PY_BOOT) -m venv --prompt "$(VENV_PROMPT)" $(VENV)
 
-.PHONY: run
-run: ## Ejecutar app Flask en segundo plano.
+.PHONY: run_app
+run_app: ## Ejecutar app Flask en segundo plano.
 	@echo "Iniciando la aplicación en http://127.0.0.1:$(PORT) ..."
 	@PORT=$(PORT) MESSAGE="$(MESSAGE)" RELEASE="$(RELEASE)" \
 		$(PY) src/app.py > $(OUT)/app_logs.txt 2>&1 & \
 	echo $$! > $(OUT)/app.pid; \
 	echo "PID guardado en $(OUT)/app.pid"
 
-.PHONY: stop
-stop: ## Detener app Flask
+.PHONY: wait_app
+wait_app: ## Esperar a que la app esté lista para recibir requests
+	@echo "Esperando a que la app esté lista en puerto $(PORT)..."
+	@timeout=30; \
+	count=0; \
+	while ! $(CURL) -s "http://127.0.0.1:$(PORT)/" > /dev/null; do \
+		if [ $$count -ge $$timeout ]; then \
+			echo "Error: Timeout esperando por la app..."; \
+			exit 1; \
+		fi; \
+		echo "Intentando conectar... ($$count/$$timeout)"; \
+		sleep 1; \
+		count=$$((count + 1)); \
+	done; \
+	echo "¡App está lista!"
+
+.PHONY: stop_app
+stop_app: ## Detener app Flask
 	@echo "Deteniendo app Flask ejecutandose en puerto $(PORT)..."
 	@if [ -f $(OUT)/app.pid ]; then \
 	  PID=$$(cat $(OUT)/app.pid); \
 	  echo "Deteniendo la app (PID=$$PID)..."; \
 	  kill $$PID && rm -f $(OUT)/app.pid; \
 	fi
+
+.PHONY: analyze
+analyze: ## Ejecutar analyzer.sh para generar peticiones y analizar logs de salida
+	@echo "Ejecutando analyzer sobre logs..."
+	@OUTDIR=$(OUT) PORT=$(PORT) bash src/analyzer.sh $(N)
 
 .PHONY: cleanup
 cleanup: ## Elimina venv y directorios generados
